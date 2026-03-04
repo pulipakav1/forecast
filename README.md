@@ -1,5 +1,16 @@
 # Walmart M5 Demand Forecasting
 
+
+
+## Dataset
+
+This project uses the **M5 Forecasting Dataset** from Kaggle.
+
+Source:
+https://www.kaggle.com/competitions/m5-forecasting-accuracy/data
+
+The dataset is not included in this repository due to licensing restrictions.
+Please download it from Kaggle and place it in the `data/` folder.
 Demand forecasting for the M5 (Makridakis 5) competition dataset: daily unit sales of retail products across US stores, with calendar, price, and event information. The project trains per-series models, compares a naive last-value baseline to XGBoost, and uses walk-forward cross-validation to pick the best model and report metrics.
 
 ---
