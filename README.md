@@ -30,18 +30,3 @@ Naive baseline MAPE is roughly 30–130% on these series; XGBoost reduces it to 
 
 Summary report: `reports/model_comparison.csv` (per-series CV MAPE/RMSE, best model, saved version and path).
 
----
-
-## Plots 
-
-**1. Forecast: last 28 days — actual vs predicted**  
-Trained model for the best-performing series; predicted vs actual sales over the last 28 days of the series.
-
-![Forecast: last 28 days](reports/forecast_FOODS_3_586_CA_3_validation.png)
-
-**2. Diagnose: raw sales for a problem series**  
-Full history for a high-MAPE series (noisy / many zeros); used to decide on fallbacks or extra features.
-
-![Diagnose: raw sales](reports/diagnose_FOODS_3_541_CA_3_validation.png)
-
-*(If the images above don’t show, generate them from the notebook; it writes these files into `reports/`.)*
