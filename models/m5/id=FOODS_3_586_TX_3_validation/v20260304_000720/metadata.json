@@ -1,0 +1,45 @@
+{
+  "best_model": "xgb",
+  "cv_mape": {
+    "naive": 0.5505415912259998,
+    "xgb": 0.32324986296505126
+  },
+  "cv_rmse": {
+    "naive": 25.554843049687246,
+    "xgb": 15.450904454029171
+  },
+  "horizon_days": 28,
+  "features": [
+    "wday",
+    "month",
+    "year",
+    "dow",
+    "weekofyear",
+    "has_event",
+    "snap",
+    "sell_price",
+    "price_change_1",
+    "price_rolling_mean_7",
+    "price_rolling_mean_28",
+    "lag_1",
+    "lag_7",
+    "lag_14",
+    "lag_28",
+    "roll_mean_7",
+    "roll_mean_28",
+    "roll_std_7",
+    "roll_std_28"
+  ],
+  "xgb_params": {
+    "n_estimators": 800,
+    "learning_rate": 0.03,
+    "max_depth": 8,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "version": "20260304_000720",
+  "series_id": "FOODS_3_586_TX_3_validation"
+}

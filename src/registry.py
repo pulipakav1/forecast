@@ -2,7 +2,18 @@ import os
 import json
 import joblib
 from datetime import datetime
+from pathlib import Path
 from typing import Any
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _resolve_dir(path: str) -> str:
+    if os.path.exists(path):
+        return path
+    alt = _PROJECT_ROOT / path
+    return str(alt) if alt.exists() else path
+
 
 def _series_dir(models_dir: str, series_id: str) -> str:
     safe = series_id.replace("/", "_")
@@ -26,6 +37,7 @@ def save_version(models_dir: str, series_id: str, model: Any, metadata: dict) ->
     return {"version": version, "path": vdir}
 
 def load_latest(models_dir: str, series_id: str):
+    models_dir = _resolve_dir(models_dir)
     base = _series_dir(models_dir, series_id)
     latest_path = os.path.join(base, "latest.json")
     if not os.path.exists(latest_path):

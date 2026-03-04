@@ -15,8 +15,6 @@ def add_calendar_features(df: pd.DataFrame) -> pd.DataFrame:
     # One “has_any_event”
     out["has_event"] = ((out["has_event_1"] == 1) | (out["has_event_2"] == 1)).astype(int)
 
-    # SNAP: pick the snap flag matching the state
-    # (M5 has snap_CA, snap_TX, snap_WI, and state_id is CA/TX/WI)
     out["snap"] = 0
     out.loc[out["state_id"] == "CA", "snap"] = out.loc[out["state_id"] == "CA", "snap_CA"]
     out.loc[out["state_id"] == "TX", "snap"] = out.loc[out["state_id"] == "TX", "snap_TX"]
@@ -37,9 +35,7 @@ def add_price_features(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 def add_lag_rolling_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Uses only past values (shifted) to prevent leakage.
-    """
+   
     out = df.copy()
     g = out.groupby("id")["sales"]
 
@@ -47,11 +43,10 @@ def add_lag_rolling_features(df: pd.DataFrame) -> pd.DataFrame:
     for lag in [1, 7, 14, 28]:
         out[f"lag_{lag}"] = g.shift(lag)
 
-    # Rolling means/stds over shifted values
-    out["roll_mean_7"] = g.shift(1).rolling(7).mean()
-    out["roll_mean_28"] = g.shift(1).rolling(28).mean()
-    out["roll_std_7"] = g.shift(1).rolling(7).std()
-    out["roll_std_28"] = g.shift(1).rolling(28).std()
+    out["roll_mean_7"] = g.transform(lambda s: s.shift(1).rolling(7).mean())
+    out["roll_mean_28"] = g.transform(lambda s: s.shift(1).rolling(28).mean())
+    out["roll_std_7"] = g.transform(lambda s: s.shift(1).rolling(7).std())
+    out["roll_std_28"] = g.transform(lambda s: s.shift(1).rolling(28).std())
 
     return out
 
@@ -61,8 +56,8 @@ def build_supervised_features(df: pd.DataFrame) -> pd.DataFrame:
     out = add_price_features(out)
     out = add_lag_rolling_features(out)
 
-    # Drop NAs from lag/rolling
-    out = out.dropna().reset_index(drop=True)
+    needed = ["id", "date", "sales"] + feature_columns()
+    out = out.dropna(subset=needed).reset_index(drop=True)
     return out
 
 def feature_columns() -> list[str]:
